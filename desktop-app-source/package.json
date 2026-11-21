@@ -1,0 +1,41 @@
+{
+  "name": "conversation-transfer-hub",
+  "productName": "Conversation Transfer Hub",
+  "version": "0.3.0",
+  "description": "Import, analyze, compress and repackage AI conversations to move them between ChatGPT, Claude and Gemini.",
+  "author": "Mehrdad Sadegh",
+  "license": "MIT",
+  "main": "src/main.js",
+  "scripts": {
+    "start": "electron .",
+    "pack": "electron-builder --win --dir",
+    "dist": "electron-builder --win"
+  },
+  "devDependencies": {
+    "electron": "31.7.7",
+    "electron-builder": "24.13.3"
+  },
+  "build": {
+    "appId": "com.acthub.transfer",
+    "productName": "Conversation Transfer Hub",
+    "directories": { "output": "dist" },
+    "files": ["src/**/*"],
+    "win": {
+      "target": [
+        { "target": "portable", "arch": ["x64"] },
+        { "target": "nsis", "arch": ["x64"] }
+      ],
+      "icon": "build/icon.ico"
+    },
+    "portable": {
+      "artifactName": "ConversationTransferHub-${version}-portable.exe"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "shortcutName": "Conversation Transfer Hub"
+    }
+  }
+}

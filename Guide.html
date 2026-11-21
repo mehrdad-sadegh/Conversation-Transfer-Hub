@@ -1,0 +1,648 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>راهنمای هاب انتقال مکالمه</title>
+<meta name="description" content="راهنمای کامل نصب و استفاده از افزونه و نرم‌افزار هاب انتقال مکالمه">
+<style>
+  :root{
+    --bg:#f6f8f9;--surface:#ffffff;--surface-2:#eef1f4;--surface-3:#e4e8ed;
+    --fg:#161a20;--muted:#5a616d;--border:#d9dee5;
+    --accent:#0d9488;--accent-2:#7c3aed;--accent-fg:#ffffff;--accent-soft:#d6f2ee;
+    --ok:#15803d;--ok-soft:#dcfce7;--warn:#b45309;--warn-soft:#fdeccf;--no:#c0362c;--no-soft:#fbe4e2;
+    --info:#1d4ed8;--info-soft:#dbe7ff;
+    --shadow:0 1px 2px rgba(20,25,35,.05),0 6px 22px rgba(20,25,35,.07);
+    --shadow-lg:0 10px 40px rgba(20,25,35,.14);
+    --font:'Vazirmatn','Segoe UI',Tahoma,system-ui,sans-serif;
+    --mono:'JetBrains Mono','Cascadia Code',Consolas,monospace;
+    --radius:16px;--radius-sm:10px;--maxw:860px;
+  }
+  @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+    --bg:#0c0f14;--surface:#141a21;--surface-2:#1a212a;--surface-3:#222b36;
+    --fg:#e7ebf1;--muted:#9aa4b2;--border:#29313c;
+    --accent:#2dd4bf;--accent-2:#a78bfa;--accent-fg:#052823;--accent-soft:#113531;
+    --ok:#4ade80;--ok-soft:#10301d;--warn:#fbbf24;--warn-soft:#352810;--no:#f87171;--no-soft:#371b1b;
+    --info:#93b4ff;--info-soft:#16233f;
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 26px rgba(0,0,0,.4);
+    --shadow-lg:0 14px 48px rgba(0,0,0,.5);
+    color-scheme:dark;
+  }}
+  :root[data-theme="dark"]{
+    --bg:#0c0f14;--surface:#141a21;--surface-2:#1a212a;--surface-3:#222b36;
+    --fg:#e7ebf1;--muted:#9aa4b2;--border:#29313c;
+    --accent:#2dd4bf;--accent-2:#a78bfa;--accent-fg:#052823;--accent-soft:#113531;
+    --ok:#4ade80;--ok-soft:#10301d;--warn:#fbbf24;--warn-soft:#352810;--no:#f87171;--no-soft:#371b1b;
+    --info:#93b4ff;--info-soft:#16233f;
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 26px rgba(0,0,0,.4);
+    --shadow-lg:0 14px 48px rgba(0,0,0,.5);
+    color-scheme:dark;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--font);font-size:16px;line-height:1.75;-webkit-font-smoothing:antialiased}
+  h1,h2,h3{margin:0;font-weight:800;letter-spacing:-.01em;line-height:1.3}
+  p{margin:0 0 14px}
+  a{color:var(--accent);text-decoration:none}
+  a:hover{text-decoration:underline}
+  code{font-family:var(--mono);background:var(--surface-2);border:1px solid var(--border);border-radius:6px;padding:1px 6px;font-size:.86em;direction:ltr;display:inline-block}
+  .mono{font-family:var(--mono);direction:ltr;unicode-bidi:plaintext}
+
+  /* top bar */
+  header.bar{position:sticky;top:0;z-index:30;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
+  .bar-in{max-width:var(--maxw);margin:0 auto;padding:12px 20px;display:flex;align-items:center;gap:12px}
+  .logo{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,var(--accent),var(--accent-2));display:grid;place-items:center;color:#fff;flex:none;box-shadow:var(--shadow)}
+  .logo svg{width:20px;height:20px}
+  .bar h1{font-size:16px}
+  .bar .spacer{flex:1}
+  .ibtn{background:var(--surface-2);border:1px solid var(--border);border-radius:9px;padding:7px 12px;font-size:13px;font-weight:700;color:var(--fg);cursor:pointer;font-family:inherit}
+  .ibtn:hover{background:var(--surface-3)}
+
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 20px 80px}
+
+  /* hero */
+  .hero{text-align:center;padding:54px 0 30px}
+  .hero .badge{display:inline-block;background:var(--accent-soft);color:var(--accent);font-weight:700;font-size:13px;padding:6px 14px;border-radius:999px;margin-bottom:18px}
+  .hero h2{font-size:34px;margin-bottom:14px;background:linear-gradient(120deg,var(--fg),var(--accent));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+  .hero p{font-size:18px;color:var(--muted);max-width:620px;margin:0 auto}
+
+  /* TOC */
+  .toc{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:26px 0 8px}
+  .toc a{background:var(--surface);border:1px solid var(--border);border-radius:999px;padding:7px 15px;font-size:13.5px;font-weight:600;color:var(--fg);box-shadow:var(--shadow)}
+  .toc a:hover{border-color:var(--accent);color:var(--accent);text-decoration:none}
+
+  section{margin-top:40px;scroll-margin-top:72px}
+  .sec-head{display:flex;align-items:center;gap:13px;margin-bottom:20px}
+  .sec-ico{width:42px;height:42px;border-radius:12px;background:var(--accent-soft);color:var(--accent);display:grid;place-items:center;flex:none}
+  .sec-ico svg{width:22px;height:22px}
+  .sec-head h2{font-size:23px}
+  .sec-head .keng{display:block;font-size:12.5px;color:var(--muted);font-weight:600;margin-top:2px}
+
+  .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);padding:22px 24px;margin-bottom:16px}
+  .card h3{font-size:17px;margin-bottom:10px;display:flex;align-items:center;gap:9px}
+  .card h3 .tag{font-size:11px;font-weight:800;padding:3px 9px;border-radius:999px;background:var(--accent-soft);color:var(--accent)}
+
+  /* two-part intro cards */
+  .duo{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .duo .card{margin:0}
+  .pill-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
+  .pill{font-size:12.5px;font-weight:700;padding:4px 11px;border-radius:999px;background:var(--surface-2);border:1px solid var(--border);color:var(--muted)}
+  .pill.g{background:var(--ok-soft);color:var(--ok);border-color:transparent}
+
+  /* steps */
+  ol.steps{list-style:none;counter-reset:s;margin:0;padding:0}
+  ol.steps>li{counter-increment:s;position:relative;padding-inline-start:52px;padding-bottom:22px;margin-bottom:2px}
+  ol.steps>li::before{content:counter(s);position:absolute;inset-inline-start:0;top:-2px;width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#fff;font-weight:800;font-family:var(--mono);display:grid;place-items:center;font-size:15px;box-shadow:var(--shadow)}
+  ol.steps>li::after{content:"";position:absolute;inset-inline-start:16px;top:34px;bottom:0;width:2px;background:var(--border)}
+  ol.steps>li:last-child{padding-bottom:0}
+  ol.steps>li:last-child::after{display:none}
+  ol.steps>li b{color:var(--fg)}
+  ol.steps>li .d{color:var(--muted);font-size:14.5px}
+
+  /* callouts */
+  .note{border-radius:var(--radius-sm);padding:13px 16px;margin:14px 0;font-size:14.5px;border:1px solid transparent;display:flex;gap:11px;align-items:flex-start}
+  .note .ni{flex:none;font-size:17px;line-height:1.5}
+  .note.info{background:var(--info-soft);border-color:color-mix(in srgb,var(--info) 25%,transparent)}
+  .note.warn{background:var(--warn-soft);border-color:color-mix(in srgb,var(--warn) 30%,transparent)}
+  .note.ok{background:var(--ok-soft);border-color:color-mix(in srgb,var(--ok) 28%,transparent)}
+  .note.no{background:var(--no-soft);border-color:color-mix(in srgb,var(--no) 28%,transparent)}
+  .note b{font-weight:800}
+
+  /* code block */
+  pre{background:var(--surface-2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:13px 15px;overflow:auto;direction:ltr;margin:12px 0}
+  pre code{background:none;border:0;padding:0;font-size:13.5px;display:block}
+
+  /* mode table */
+  .modes{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:6px}
+  .mode{border:1px solid var(--border);border-radius:var(--radius-sm);padding:14px 16px;background:var(--surface-2)}
+  .mode .mt{font-weight:800;font-size:15px;color:var(--accent);margin-bottom:4px}
+  .mode .md{font-size:14px;color:var(--muted)}
+
+  /* mock UI (extension popup) */
+  .mock{border:1px solid var(--border);border-radius:14px;overflow:hidden;box-shadow:var(--shadow-lg);background:var(--surface);max-width:360px;margin:6px auto 0;font-size:13px}
+  .mock .mh{display:flex;align-items:center;gap:9px;padding:11px 13px;border-bottom:1px solid var(--border);background:var(--surface)}
+  .mock .mlogo{width:26px;height:26px;border-radius:7px;background:linear-gradient(135deg,var(--accent),var(--accent-2));display:grid;place-items:center;color:#fff;flex:none}
+  .mock .mlogo svg{width:15px;height:15px}
+  .mock .mh b{font-size:13px;flex:1}
+  .mock .mh .tg{background:var(--surface-2);border:1px solid var(--border);border-radius:6px;padding:3px 7px;font-size:11px;font-weight:700;color:var(--muted)}
+  .mock .mb{padding:13px}
+  .mock .mpill{display:inline-flex;align-items:center;gap:6px;background:var(--accent-soft);color:var(--accent);border-radius:999px;padding:3px 10px;font-weight:700;font-size:12px;margin-bottom:11px}
+  .mock .mpill .mdot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+  .mock .mstats{display:flex;gap:6px;margin-bottom:11px}
+  .mock .mstat{flex:1;background:var(--surface-2);border:1px solid var(--border);border-radius:7px;padding:5px;text-align:center}
+  .mock .mstat b{display:block;font-family:var(--mono);font-size:15px}
+  .mock .mstat span{font-size:10px;color:var(--muted)}
+  .mock .mlabel{font-size:10.5px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.03em;margin:9px 0 4px}
+  .mock .msel{background:var(--surface-2);border:1px solid var(--border);border-radius:7px;padding:7px 9px;font-size:12.5px;display:flex;justify-content:space-between;align-items:center;color:var(--fg)}
+  .mock .msel::after{content:"▾";color:var(--muted)}
+  .mock .mout{background:var(--surface-2);border:1px solid var(--border);border-radius:7px;padding:9px;font-family:var(--mono);font-size:10.5px;color:var(--muted);height:52px;overflow:hidden;margin-top:4px}
+  .mock .mrow{display:flex;gap:6px;margin-top:9px}
+  .mock .mbtn{flex:1;border-radius:7px;padding:7px;font-weight:700;font-size:12px;text-align:center;border:1px solid var(--border)}
+  .mock .mbtn.p{background:var(--accent);color:var(--accent-fg);border-color:transparent}
+  .mock .mbtn.s{background:var(--surface-2);color:var(--fg)}
+
+  .flow{display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:center;margin:4px 0 2px}
+  .flow .node{background:var(--surface);border:1px solid var(--border);border-radius:11px;padding:11px 15px;font-weight:700;font-size:14px;box-shadow:var(--shadow);text-align:center;min-width:0}
+  .flow .node small{display:block;font-weight:500;color:var(--muted);font-size:12px}
+  .flow .arr{color:var(--accent);font-size:20px;font-weight:800;flex:none}
+
+  details.faq{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);margin-bottom:10px;overflow:hidden}
+  details.faq>summary{cursor:pointer;padding:14px 18px;font-weight:700;font-size:15px;list-style:none;display:flex;align-items:center;gap:10px}
+  details.faq>summary::-webkit-details-marker{display:none}
+  details.faq>summary::before{content:"+";color:var(--accent);font-weight:800;font-size:20px;line-height:1}
+  details.faq[open]>summary::before{content:"–"}
+  details.faq .fb{padding:0 18px 16px;color:var(--muted);font-size:14.5px}
+  details.faq .fb code{color:var(--fg)}
+
+  footer{margin-top:52px;text-align:center;border-top:1px solid var(--border);padding-top:28px}
+  .tgbtn{display:inline-flex;align-items:center;gap:9px;background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#fff;border-radius:11px;padding:11px 20px;font-weight:800;font-size:15px;margin-top:6px;font-family:var(--mono)}
+  .tgbtn:hover{filter:brightness(1.07);text-decoration:none}
+  .tgbtn svg{width:18px;height:18px}
+  .dev{color:var(--muted);font-size:14px;margin-top:14px}
+  .dev b{color:var(--fg)}
+
+  [data-lang]{display:none}
+  body[data-show="fa"] [data-lang="fa"]{display:revert}
+  body[data-show="en"] [data-lang="en"]{display:revert}
+  /* keep block elements block when shown */
+  body[data-show="fa"] li[data-lang="fa"],body[data-show="en"] li[data-lang="en"]{display:list-item}
+
+  @media (max-width:680px){
+    .duo,.modes{grid-template-columns:1fr}
+    .hero h2{font-size:27px}
+    .hero p{font-size:16px}
+    body{font-size:15.5px}
+    .flow .arr{transform:rotate(90deg)}
+    .flow{flex-direction:column}
+  }
+  @media print{header.bar,.toc,.ibtn{display:none}.card{break-inside:avoid}}
+</style>
+</head>
+<body data-show="fa">
+
+<header class="bar">
+  <div class="bar-in">
+    <span class="logo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h11"/><path d="m12 4 3 3-3 3"/><path d="M20 17H9"/><path d="m12 20-3-3 3-3"/></svg></span>
+    <h1><span data-lang="fa">هاب انتقال مکالمه</span><span data-lang="en">Conversation Transfer Hub</span></h1>
+    <span class="spacer"></span>
+    <button class="ibtn" id="langBtn">EN</button>
+    <button class="ibtn" id="themeBtn"><span id="themeIco">◐</span></button>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <div class="hero">
+    <span class="badge"><span data-lang="fa">راهنمای کامل کاربری</span><span data-lang="en">Complete User Guide</span></span>
+    <h2><span data-lang="fa">انتقال مکالمه بین هوش‌های مصنوعی</span><span data-lang="en">Move conversations between AIs</span></h2>
+    <p>
+      <span data-lang="fa">یک مکالمه‌ی کامل را به‌همراه context آن از یک هوش مصنوعی (ChatGPT، Claude، Gemini، DeepSeek…) به هوش مصنوعی دیگر منتقل کن — بدون جاافتادن اطلاعات و با حفظ کامل کدها.</span>
+      <span data-lang="en">Carry a whole conversation — with its context intact and code preserved verbatim — from one AI (ChatGPT, Claude, Gemini, DeepSeek…) to another.</span>
+    </p>
+  </div>
+
+  <nav class="toc">
+    <a href="#overview"><span data-lang="fa">معرفی</span><span data-lang="en">Overview</span></a>
+    <a href="#extension"><span data-lang="fa">افزونه</span><span data-lang="en">Extension</span></a>
+    <a href="#desktop"><span data-lang="fa">نرم‌افزار دسکتاپ</span><span data-lang="en">Desktop app</span></a>
+    <a href="#modes"><span data-lang="fa">حالت‌های انتقال</span><span data-lang="en">Transfer modes</span></a>
+    <a href="#endtoend"><span data-lang="fa">سناریوی کامل</span><span data-lang="en">Full walkthrough</span></a>
+    <a href="#privacy"><span data-lang="fa">حریم خصوصی</span><span data-lang="en">Privacy</span></a>
+    <a href="#faq">FAQ</a>
+  </nav>
+
+  <!-- OVERVIEW -->
+  <section id="overview">
+    <div class="sec-head">
+      <span class="sec-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg></span>
+      <div><h2><span data-lang="fa">این برنامه چه کاری می‌کند؟</span><span data-lang="en">What does this do?</span></h2>
+      <span class="keng" data-lang="fa">Overview</span><span class="keng" data-lang="en">The big picture</span></div>
+    </div>
+
+    <div class="card">
+      <p>
+        <span data-lang="fa">وقتی با یک هوش مصنوعی طولانی گفتگو می‌کنی، کلی context ساخته می‌شود: هدف پروژه، تصمیم‌ها، کدها، محدودیت‌ها. اگر بخواهی ادامه‌ی کار را با یک AI دیگر پیش ببری، همه‌ی این‌ها از بین می‌رود. این برنامه همان مکالمه را می‌خواند، مهم‌هایش را بیرون می‌کشد و یک «بریفینگ آماده‌ی Paste» می‌سازد که می‌توانی مستقیم در AI مقصد بچسبانی.</span>
+        <span data-lang="en">A long chat with an AI builds up a lot of context: the project goal, decisions, code, constraints. Switch to another AI and all of that is lost. This tool reads that conversation, pulls out what matters, and produces a paste-ready briefing you drop straight into the destination AI.</span>
+      </p>
+      <p style="margin-bottom:0">
+        <span data-lang="fa">کار از <b>دو بخش</b> تشکیل شده که مکمل هم هستند:</span>
+        <span data-lang="en">It comes in <b>two complementary parts</b>:</span>
+      </p>
+    </div>
+
+    <div class="duo">
+      <div class="card">
+        <h3><span class="tag">۱ / 1</span><span data-lang="fa">افزونه‌ی مرورگر</span><span data-lang="en">Browser extension</span></h3>
+        <p style="font-size:14.5px;color:var(--muted);margin-bottom:8px">
+          <span data-lang="fa">خواننده‌ی اصلی. داخل مرورگر خودت که توش لاگینی اجرا می‌شود، مکالمه‌ی باز را مستقیم می‌خواند. چون داخل حساب خودت کار می‌کند، نیازی به اعتماد به مرورگر ثالث نیست.</span>
+          <span data-lang="en">The main reader. Runs inside your own browser where you're already signed in, and reads the open conversation directly — no third-party browser to trust.</span>
+        </p>
+        <div class="pill-row">
+          <span class="pill g">ChatGPT</span><span class="pill g">Claude</span><span class="pill g">DeepSeek</span><span class="pill g">Gemini</span>
+        </div>
+      </div>
+      <div class="card">
+        <h3><span class="tag">۲ / 2</span><span data-lang="fa">نرم‌افزار دسکتاپ (هاب)</span><span data-lang="en">Desktop app (hub)</span></h3>
+        <p style="font-size:14.5px;color:var(--muted);margin-bottom:0">
+          <span data-lang="fa">اختیاری و برای کار حرفه‌ای‌تر. فایل یا متن مکالمه را می‌گیرد و امکان تحلیل، فشرده‌سازی، ویرایش context و بسته‌بندی می‌دهد. هیچ لاگینی نمی‌خواهد و کاملاً آفلاین است.</span>
+          <span data-lang="en">Optional, for deeper work. Takes a file or pasted text and lets you analyze, compress, edit the context, and package it. No login, fully offline.</span>
+        </p>
+      </div>
+    </div>
+
+    <div class="note info">
+      <span class="ni">💡</span>
+      <div>
+        <span data-lang="fa">برای کار روزمره فقط <b>افزونه</b> کافی است: مکالمه را بخوان، خروجی را کپی کن، در AI مقصد بچسبان. نرم‌افزار دسکتاپ وقتی به‌درد می‌خورد که بخواهی خروجی را دقیق‌تر ویرایش یا بایگانی کنی.</span>
+        <span data-lang="en">For everyday use the <b>extension alone</b> is enough: read, copy, paste into the destination AI. The desktop app is for when you want to fine-tune or archive the result.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- EXTENSION -->
+  <section id="extension">
+    <div class="sec-head">
+      <span class="sec-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"/><path d="M9 3v6h6V3M9 15h.01M13 15h2"/></svg></span>
+      <div><h2><span data-lang="fa">بخش ۱ — افزونه‌ی مرورگر</span><span data-lang="en">Part 1 — The browser extension</span></h2>
+      <span class="keng" data-lang="fa">نصب و استفاده</span><span class="keng" data-lang="en">Install & use</span></div>
+    </div>
+
+    <div class="card">
+      <h3><span data-lang="fa">نصب افزونه در کروم (یا Edge / Brave)</span><span data-lang="en">Install in Chrome (or Edge / Brave)</span></h3>
+      <ol class="steps">
+        <li>
+          <b data-lang="fa">پوشه‌ی <code>extension</code> را آماده داشته باش</b><b data-lang="en">Have the <code>extension</code> folder ready</b>
+          <div class="d" data-lang="fa">همان پوشه‌ای که فایل <code>manifest.json</code> داخلش است.</div>
+          <div class="d" data-lang="en">The folder that contains <code>manifest.json</code>.</div>
+        </li>
+        <li>
+          <b data-lang="fa">به آدرس <code>chrome://extensions</code> برو</b><b data-lang="en">Open <code>chrome://extensions</code></b>
+          <div class="d" data-lang="fa">این آدرس را در نوار آدرس مرورگر تایپ کن و Enter بزن.</div>
+          <div class="d" data-lang="en">Type it in the address bar and press Enter.</div>
+        </li>
+        <li>
+          <b data-lang="fa">حالت توسعه‌دهنده (Developer mode) را روشن کن</b><b data-lang="en">Turn on Developer mode</b>
+          <div class="d" data-lang="fa">کلید آن گوشه‌ی بالا-سمت راست صفحه است.</div>
+          <div class="d" data-lang="en">The toggle is in the top-right corner.</div>
+        </li>
+        <li>
+          <b data-lang="fa">روی «Load unpacked» بزن و پوشه‌ی <code>extension</code> را انتخاب کن</b><b data-lang="en">Click “Load unpacked” and pick the <code>extension</code> folder</b>
+          <div class="d" data-lang="fa">افزونه با آیکن خودش در نوار مرورگر ظاهر می‌شود.</div>
+          <div class="d" data-lang="en">The extension appears with its own icon in the toolbar.</div>
+        </li>
+        <li>
+          <b data-lang="fa">آیکن را پین کن</b><b data-lang="en">Pin the icon</b>
+          <div class="d" data-lang="fa">روی آیکن پازل مرورگر بزن و افزونه را سنجاق کن تا همیشه در دسترس باشد.</div>
+          <div class="d" data-lang="en">Click the puzzle icon and pin it so it's always one click away.</div>
+        </li>
+      </ol>
+      <div class="note info"><span class="ni">ℹ️</span><div>
+        <span data-lang="fa">«Load unpacked» چون افزونه از فروشگاه نصب نشده لازم است و کاملاً عادی است. تا وقتی حالت توسعه‌دهنده روشن بماند، افزونه فعال است.</span>
+        <span data-lang="en">“Load unpacked” is needed because the extension isn't from the Web Store — this is normal. It stays active as long as Developer mode is on.</span>
+      </div></div>
+    </div>
+
+    <div class="card">
+      <h3><span data-lang="fa">خواندن یک مکالمه</span><span data-lang="en">Reading a conversation</span></h3>
+      <div style="display:grid;grid-template-columns:1fr 360px;gap:22px;align-items:start" class="readgrid">
+        <ol class="steps">
+          <li>
+            <b data-lang="fa">مکالمه را در AI مبدأ باز کن</b><b data-lang="en">Open the conversation in the source AI</b>
+            <div class="d" data-lang="fa">مثلاً وارد ChatGPT شو (لاگین باش) و همان چتی را که می‌خواهی منتقل کنی باز کن.</div>
+            <div class="d" data-lang="en">E.g. go to ChatGPT (signed in) and open the exact chat you want to move.</div>
+          </li>
+          <li>
+            <b data-lang="fa">روی آیکن افزونه بزن</b><b data-lang="en">Click the extension icon</b>
+            <div class="d" data-lang="fa">پنجره‌ی کوچک افزونه باز می‌شود و سرویس شناسایی‌شده را بالا نشان می‌دهد (مثلاً «ChatGPT») به‌همراه تعداد پیام، کد و تصمیم‌ها.</div>
+            <div class="d" data-lang="en">The popup opens, shows the detected service (e.g. “ChatGPT”) and the count of messages, code blocks and decisions.</div>
+          </li>
+          <li>
+            <b data-lang="fa">«مقصد» و «حالت انتقال» را انتخاب کن</b><b data-lang="en">Pick “destination” and “transfer mode”</b>
+            <div class="d" data-lang="fa">مقصد = AuI که می‌خواهی ادامه بدهی. حالت = چقدر از مکالمه منتقل شود (پایین‌تر توضیح داده شده).</div>
+            <div class="d" data-lang="en">Destination = the AI you'll continue in. Mode = how much to carry over (explained below).</div>
+          </li>
+          <li>
+            <b data-lang="fa">خروجی را کپی کن</b><b data-lang="en">Copy the output</b>
+            <div class="d" data-lang="fa">متن آماده در کادر پایین ساخته می‌شود. دکمه‌ی «کپی» را بزن، یا با «دانلود .md / .json» ذخیره‌اش کن.</div>
+            <div class="d" data-lang="en">The ready text appears in the box. Hit “Copy”, or save it with “Download .md / .json”.</div>
+          </li>
+          <li>
+            <b data-lang="fa">در AI مقصد بچسبان</b><b data-lang="en">Paste into the destination AI</b>
+            <div class="d" data-lang="fa">یک چت جدید در AI مقصد باز کن و خروجی را به‌عنوان اولین پیام Paste کن. تمام.</div>
+            <div class="d" data-lang="en">Open a new chat in the destination AI and paste it as your first message. Done.</div>
+          </li>
+        </ol>
+
+        <div>
+          <div class="mock" aria-hidden="true">
+            <div class="mh">
+              <span class="mlogo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h11"/><path d="m12 4 3 3-3 3"/><path d="M20 17H9"/><path d="m12 20-3-3 3-3"/></svg></span>
+              <b data-lang="fa">هاب انتقال مکالمه</b><b data-lang="en">Transfer Hub</b>
+              <span class="tg">↻</span><span class="tg">EN</span>
+            </div>
+            <div class="mb">
+              <span class="mpill"><span class="mdot"></span>ChatGPT</span>
+              <span style="font-size:11px;color:var(--muted)" data-lang="fa"> شناسایی شد</span><span style="font-size:11px;color:var(--muted)" data-lang="en"> detected</span>
+              <div class="mstats">
+                <div class="mstat"><b>118</b><span data-lang="fa">پیام</span><span data-lang="en">msgs</span></div>
+                <div class="mstat"><b>14</b><span data-lang="fa">کد</span><span data-lang="en">code</span></div>
+                <div class="mstat"><b>6</b><span data-lang="fa">تصمیم</span><span data-lang="en">decisions</span></div>
+              </div>
+              <div class="mlabel" data-lang="fa">به (مقصد)</div><div class="mlabel" data-lang="en">To (destination)</div>
+              <div class="msel">Claude (Anthropic)</div>
+              <div class="mlabel" data-lang="fa">حالت انتقال</div><div class="mlabel" data-lang="en">Transfer mode</div>
+              <div class="msel"><span data-lang="fa">کامل — همه‌چیز</span><span data-lang="en">Full — everything</span></div>
+              <div class="mlabel" data-lang="fa">خروجی آماده‌ی Paste</div><div class="mlabel" data-lang="en">Ready to paste</div>
+              <div class="mout"># Conversation briefing<br>## Project goal<br>Build a task tracker…</div>
+              <div class="mrow">
+                <div class="mbtn p" data-lang="fa">کپی</div><div class="mbtn p" data-lang="en">Copy</div>
+                <div class="mbtn s">.md</div>
+                <div class="mbtn s">.json</div>
+              </div>
+            </div>
+          </div>
+          <p style="text-align:center;font-size:12px;color:var(--muted);margin-top:8px">
+            <span data-lang="fa">نمای تقریبی پنجره‌ی افزونه</span><span data-lang="en">Approximate view of the popup</span>
+          </p>
+        </div>
+      </div>
+
+      <div class="note warn"><span class="ni">⚠️</span><div>
+        <span data-lang="fa">اگر پیام «مکالمه‌ای پیدا نشد» دیدی: مطمئن شو یک چت واقعی باز است و لاگینی، صفحه را یک‌بار رفرش کن (<code>F5</code>) و دوباره افزونه را باز کن. دکمه‌ی <code>↻</code> بالای افزونه هم صفحه را دوباره می‌خواند.</span>
+        <span data-lang="en">If you see “No conversation found”: make sure a real chat is open and you're signed in, refresh the page once (<code>F5</code>), then reopen the extension. The <code>↻</code> button at the top re-reads the page.</span>
+      </div></div>
+    </div>
+
+    <div class="card">
+      <h3><span data-lang="fa">دو نوع خروجی</span><span data-lang="en">Two output formats</span></h3>
+      <div class="modes">
+        <div class="mode">
+          <div class="mt mono">.md — <span data-lang="fa">بریفینگ</span><span data-lang="en">Briefing</span></div>
+          <div class="md">
+            <span data-lang="fa">متن تمیز و خوانا که context و کل مکالمه را دارد. همین را مستقیم در AI مقصد Paste کن. گزینه‌ی پیش‌فرض و پیشنهادی.</span>
+            <span data-lang="en">A clean, readable text holding the context and the whole transcript. Paste this straight into the destination AI. The recommended default.</span>
+          </div>
+        </div>
+        <div class="mode">
+          <div class="mt mono">.json — <span data-lang="fa">بسته</span><span data-lang="en">Package</span></div>
+          <div class="md">
+            <span data-lang="fa">فایل ساختاریافته‌ی <code>.ai-transfer</code> برای بایگانی یا باز کردن در نرم‌افزار دسکتاپ جهت ویرایش دقیق‌تر.</span>
+            <span data-lang="en">A structured <code>.ai-transfer</code> file to archive, or to open in the desktop app for finer editing.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DESKTOP -->
+  <section id="desktop">
+    <div class="sec-head">
+      <span class="sec-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></span>
+      <div><h2><span data-lang="fa">بخش ۲ — نرم‌افزار دسکتاپ</span><span data-lang="en">Part 2 — The desktop app</span></h2>
+      <span class="keng" data-lang="fa">هاب تحلیل و بسته‌بندی</span><span class="keng" data-lang="en">Analyze & package hub</span></div>
+    </div>
+
+    <div class="card">
+      <h3><span data-lang="fa">نصب یا اجرا</span><span data-lang="en">Install or run</span></h3>
+      <p><span data-lang="fa">دو فایل داری؛ هر کدام را خواستی استفاده کن:</span><span data-lang="en">You have two files; use whichever you prefer:</span></p>
+      <div class="modes">
+        <div class="mode">
+          <div class="mt mono" data-lang="fa">نسخه‌ی Portable</div><div class="mt mono" data-lang="en">Portable</div>
+          <div class="md">
+            <span data-lang="fa"><code>ConversationTransferHub-0.3.0-portable.exe</code> را دابل‌کلیک کن. بدون نصب اجرا می‌شود — حتی از روی فلش.</span>
+            <span data-lang="en">Double-click <code>ConversationTransferHub-0.3.0-portable.exe</code>. Runs with no install — even from a USB stick.</span>
+          </div>
+        </div>
+        <div class="mode">
+          <div class="mt mono" data-lang="fa">نسخه‌ی نصبی</div><div class="mt mono" data-lang="en">Installer</div>
+          <div class="md">
+            <span data-lang="fa"><code>Conversation Transfer Hub Setup 0.3.0.exe</code> را اجرا کن تا نصب شود و شورتکات در منوی Start و دسکتاپ ساخته شود.</span>
+            <span data-lang="en">Run <code>Conversation Transfer Hub Setup 0.3.0.exe</code> to install it with Start-menu and desktop shortcuts.</span>
+          </div>
+        </div>
+      </div>
+      <div class="note warn"><span class="ni">🛡️</span><div>
+        <span data-lang="fa">بار اول ممکن است ویندوز SmartScreen هشدار بدهد (چون فایل امضای دیجیتال خریداری‌شده ندارد). روی <b>More info → Run anyway</b> بزن. این موضوع ربطی به سالم‌بودن برنامه ندارد.</span>
+        <span data-lang="en">The first run may trigger Windows SmartScreen (the file isn't code-signed). Click <b>More info → Run anyway</b>. It doesn't mean anything is wrong with the app.</span>
+      </div></div>
+    </div>
+
+    <div class="card">
+      <h3><span data-lang="fa">گردش کار در برنامه</span><span data-lang="en">The in-app workflow</span></h3>
+      <ol class="steps">
+        <li>
+          <b data-lang="fa">ورودی بده</b><b data-lang="en">Give it input</b>
+          <div class="d" data-lang="fa">یا متن خام مکالمه را Paste کن، یا فایل <code>.ai-transfer</code> / <code>.json</code> / <code>.txt</code> / <code>.md</code> را باز کن (یا روی کادر رها کن).</div>
+          <div class="d" data-lang="en">Either paste the raw transcript, or open a <code>.ai-transfer</code> / <code>.json</code> / <code>.txt</code> / <code>.md</code> file (or drop it on the box).</div>
+        </li>
+        <li>
+          <b data-lang="fa">«تحلیل» را بزن</b><b data-lang="en">Click “Analyze”</b>
+          <div class="d" data-lang="fa">آمار مکالمه، حجم تخمینی توکن، و اینکه AI مقصد چه قابلیت‌هایی دارد نمایش داده می‌شود.</div>
+          <div class="d" data-lang="en">It shows conversation stats, estimated token size, and what the destination AI supports.</div>
+        </li>
+        <li>
+          <b data-lang="fa">حالت انتقال را انتخاب کن</b><b data-lang="en">Choose a transfer mode</b>
+          <div class="d" data-lang="fa">کامل، هوشمند، فشرده، یا دلخواه (در حالت دلخواه خودت تیک می‌زنی چه چیزهایی برود).</div>
+          <div class="d" data-lang="en">Full, Smart, Compact, or Custom (tick exactly what to include).</div>
+        </li>
+        <li>
+          <b data-lang="fa">Context را ویرایش کن</b><b data-lang="en">Edit the context</b>
+          <div class="d" data-lang="fa">هدف پروژه، تصمیم‌ها، محدودیت‌ها، کارهای باقی‌مانده و… را قبل از تولید خروجی اصلاح کن. کدها عیناً حفظ می‌شوند و هرگز خلاصه نمی‌شوند.</div>
+          <div class="d" data-lang="en">Fix the goal, decisions, constraints, open tasks and more before generating. Code is kept verbatim, never summarized.</div>
+        </li>
+        <li>
+          <b data-lang="fa">(اختیاری) دقیق‌سازی با AI</b><b data-lang="en">(Optional) refine with AI</b>
+          <div class="d" data-lang="fa">اگر کلید API داشته باشی، برنامه می‌تواند context را دقیق‌تر کند. کلید روی همین کامپیوتر رمز می‌شود (DPAPI) و جز به همان سرویس جایی نمی‌رود.</div>
+          <div class="d" data-lang="en">With your own API key, the app can sharpen the context. The key is encrypted on this PC (DPAPI) and only ever goes to that provider.</div>
+        </li>
+        <li>
+          <b data-lang="fa">خروجی را بگیر</b><b data-lang="en">Take the output</b>
+          <div class="d" data-lang="fa">بین «بریفینگ» و «بسته» جابه‌جا شو، بعد «کپی» یا «ذخیره‌ی فایل» را بزن.</div>
+          <div class="d" data-lang="en">Switch between “Briefing” and “Package”, then “Copy” or “Save file”.</div>
+        </li>
+      </ol>
+      <div class="note ok"><span class="ni">🔒</span><div>
+        <span data-lang="fa">هیچ‌چیز از این کامپیوتر خارج نمی‌شود، مگر درخواستی که خودت با کلید API خودت به AI بدهی.</span>
+        <span data-lang="en">Nothing leaves this computer except a request you deliberately trigger with your own API key.</span>
+      </div></div>
+    </div>
+  </section>
+
+  <!-- MODES -->
+  <section id="modes">
+    <div class="sec-head">
+      <span class="sec-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M7 12h10M10 18h4"/></svg></span>
+      <div><h2><span data-lang="fa">حالت‌های انتقال</span><span data-lang="en">Transfer modes</span></h2>
+      <span class="keng" data-lang="fa">چقدر از مکالمه منتقل شود</span><span class="keng" data-lang="en">How much to carry over</span></div>
+    </div>
+    <div class="card">
+      <div class="modes">
+        <div class="mode">
+          <div class="mt"><span data-lang="fa">کامل</span><span data-lang="en">Full</span></div>
+          <div class="md"><span data-lang="fa">همه‌چیز حفظ می‌شود — کل پیام‌ها بدون حذف. امن‌ترین انتخاب وقتی مطمئن نیستی چه چیزی مهم است.</span><span data-lang="en">Keeps everything — every message, nothing dropped. Safest when you're unsure what matters.</span></div>
+        </div>
+        <div class="mode">
+          <div class="mt"><span data-lang="fa">هوشمند</span><span data-lang="en">Smart</span></div>
+          <div class="md"><span data-lang="fa">گپ‌وگفت‌های بی‌اهمیت و پیام‌های تکراری حذف می‌شوند، ولی مطالب مهم می‌مانند.</span><span data-lang="en">Drops small talk and duplicate messages, keeps the substance.</span></div>
+        </div>
+        <div class="mode">
+          <div class="mt"><span data-lang="fa">فشرده</span><span data-lang="en">Compact</span></div>
+          <div class="md"><span data-lang="fa">فقط کد، تصمیم‌ها و context اصلی. برای وقتی که می‌خواهی خروجی خیلی کوتاه باشد.</span><span data-lang="en">Only code, decisions and the core context. For when you need the output as short as possible.</span></div>
+        </div>
+        <div class="mode">
+          <div class="mt"><span data-lang="fa">دلخواه <span style="font-size:11px;color:var(--muted)">(فقط دسکتاپ)</span></span><span data-lang="en">Custom <span style="font-size:11px;color:var(--muted)">(desktop only)</span></span></div>
+          <div class="md"><span data-lang="fa">خودت تیک می‌زنی: پیام‌های خودت، پیام‌های AI، تصمیم‌ها، کد، فایل‌ها، context و…</span><span data-lang="en">Tick exactly what goes in: your messages, AI messages, decisions, code, files, context and more.</span></div>
+        </div>
+      </div>
+      <div class="note info"><span class="ni">💡</span><div>
+        <span data-lang="fa">افزونه سه حالت دارد (کامل، هوشمند، فشرده). حالت «دلخواه» فقط در نرم‌افزار دسکتاپ هست. اگر شک داری، <b>کامل</b> را بزن.</span>
+        <span data-lang="en">The extension has three modes (Full, Smart, Compact). “Custom” is desktop-only. When in doubt, choose <b>Full</b>.</span>
+      </div></div>
+    </div>
+  </section>
+
+  <!-- END TO END -->
+  <section id="endtoend">
+    <div class="sec-head">
+      <span class="sec-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+      <div><h2><span data-lang="fa">سناریوی کامل: از ChatGPT به Claude</span><span data-lang="en">Full walkthrough: ChatGPT → Claude</span></h2>
+      <span class="keng" data-lang="fa">قدم‌به‌قدم</span><span class="keng" data-lang="en">End to end</span></div>
+    </div>
+    <div class="card">
+      <div class="flow">
+        <div class="node">ChatGPT<small data-lang="fa">مکالمه‌ی باز</small><small data-lang="en">open chat</small></div>
+        <span class="arr">←</span>
+        <div class="node" style="border-color:var(--accent)"><span data-lang="fa">افزونه</span><span data-lang="en">Extension</span><small data-lang="fa">خواندن + کپی</small><small data-lang="en">read + copy</small></div>
+        <span class="arr">←</span>
+        <div class="node">Claude<small data-lang="fa">Paste در چت جدید</small><small data-lang="en">paste in new chat</small></div>
+      </div>
+      <ol class="steps" style="margin-top:20px">
+        <li><b data-lang="fa">در ChatGPT مکالمه‌ی موردنظر را باز کن.</b><b data-lang="en">Open the conversation in ChatGPT.</b></li>
+        <li><b data-lang="fa">آیکن افزونه را بزن؛ «ChatGPT» باید شناسایی شود.</b><b data-lang="en">Click the extension; it should detect “ChatGPT”.</b></li>
+        <li><b data-lang="fa">مقصد را <code>Claude</code> و حالت را <code>کامل</code> بگذار.</b><b data-lang="en">Set destination to <code>Claude</code> and mode to <code>Full</code>.</b></li>
+        <li><b data-lang="fa">«کپی» را بزن.</b><b data-lang="en">Hit “Copy”.</b></li>
+        <li><b data-lang="fa">به Claude برو، چت جدید باز کن و Paste کن و بفرست.</b><b data-lang="en">Go to Claude, open a new chat, paste and send.</b>
+          <div class="d" data-lang="fa">Claude حالا کل context را دارد و دقیقاً از همان‌جا ادامه می‌دهد.</div>
+          <div class="d" data-lang="en">Claude now has the full context and continues exactly where you left off.</div>
+        </li>
+      </ol>
+      <div class="note ok"><span class="ni">✅</span><div>
+        <span data-lang="fa">برای هر جفت دیگری هم همین مراحل است — فقط AI مبدأ و مقصد را عوض کن.</span>
+        <span data-lang="en">The same steps work for any other pair — just change the source and destination AI.</span>
+      </div></div>
+    </div>
+  </section>
+
+  <!-- PRIVACY -->
+  <section id="privacy">
+    <div class="sec-head">
+      <span class="sec-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></span>
+      <div><h2><span data-lang="fa">حریم خصوصی و محدودیت‌ها</span><span data-lang="en">Privacy & limits</span></h2>
+      <span class="keng" data-lang="fa">چه چیزی منتقل می‌شود و چه چیزی نه</span><span class="keng" data-lang="en">What moves and what doesn't</span></div>
+    </div>
+    <div class="card">
+      <div class="note ok"><span class="ni">🔐</span><div>
+        <span data-lang="fa"><b>لوکال‌محور:</b> افزونه مکالمه را از همان صفحه‌ی باز می‌خواند و همه‌چیز داخل مرورگر/کامپیوتر پردازش می‌شود. هیچ‌جا آپلود نمی‌شود، مگر اینکه خودت دقیق‌سازی با کلید API را فعال کنی.</span>
+        <span data-lang="en"><b>Local-first:</b> the extension reads from the page you already have open and processes everything inside the browser/computer. Nothing is uploaded unless you yourself enable AI refine with your API key.</span>
+      </div></div>
+      <div class="note info"><span class="ni">🧩</span><div>
+        <span data-lang="fa"><b>کد سالم می‌ماند:</b> بلوک‌های کد عیناً و کامل منتقل می‌شوند و هرگز خلاصه یا دستکاری نمی‌شوند.</span>
+        <span data-lang="en"><b>Code stays intact:</b> code blocks are carried verbatim and in full — never summarized or altered.</span>
+      </div></div>
+      <div class="note warn"><span class="ni">🖼️</span><div>
+        <span data-lang="fa"><b>عکس‌ها و فایل‌ها منتقل نمی‌شوند:</b> محتوای تصاویر و فایل‌های ضمیمه قابل انتقال نیست؛ فقط به‌صورت نشانه‌ی <code>[Image]</code> یا <code>[Attachment]</code> در متن ثبت می‌شود تا بدانی آنجا چیزی بوده. اگر فایلی مهم است، باید دستی در AI مقصد دوباره آپلودش کنی.</span>
+        <span data-lang="en"><b>Images & files don't transfer:</b> the content of images and attachments can't be moved; they appear only as an <code>[Image]</code> or <code>[Attachment]</code> marker so you know something was there. Re-upload any important file manually in the destination AI.</span>
+      </div></div>
+      <div class="note info"><span class="ni">📶</span><div>
+        <span data-lang="fa"><b>پشتیبانی سرویس‌ها:</b> ChatGPT، Claude و DeepSeek با روش دقیق (API داخلی خود سرویس، بدون اسکرول و بدون جاافتادگی) خوانده می‌شوند. Gemini و بقیه‌ی سرویس‌ها با روش عمومی خواندن از صفحه پشتیبانی می‌شوند.</span>
+        <span data-lang="en"><b>Service support:</b> ChatGPT, Claude and DeepSeek are read the precise way (each service's own internal API — no scrolling, no gaps). Gemini and others are supported through generic page reading.</span>
+      </div></div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq">
+    <div class="sec-head">
+      <span class="sec-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 3-3 3M12 17h.01"/></svg></span>
+      <div><h2><span data-lang="fa">سوالات پرتکرار</span><span data-lang="en">FAQ & troubleshooting</span></h2>
+      <span class="keng" data-lang="fa">رفع اشکال</span><span class="keng" data-lang="en">Common issues</span></div>
+    </div>
+
+    <details class="faq"><summary><span data-lang="fa">افزونه می‌گوید «مکالمه‌ای پیدا نشد»</span><span data-lang="en">The extension says “No conversation found”</span></summary>
+      <div class="fb"><span data-lang="fa">یک چت واقعی را باز کن (نه صفحه‌ی لیست)، مطمئن شو لاگینی، صفحه را با <code>F5</code> رفرش کن و دوباره افزونه را باز کن. دکمه‌ی <code>↻</code> هم صفحه را دوباره می‌خواند.</span><span data-lang="en">Open a real chat (not the list page), make sure you're signed in, refresh with <code>F5</code>, then reopen the extension. The <code>↻</code> button also re-reads the page.</span></div>
+    </details>
+
+    <details class="faq"><summary><span data-lang="fa">حالت را عوض کردم ولی خروجی تغییر نکرد</span><span data-lang="en">I changed the mode but the output didn't update</span></summary>
+      <div class="fb"><span data-lang="fa">دکمه‌ی <code>↻</code> را بزن تا دوباره خوانده و با حالت جدید ساخته شود.</span><span data-lang="en">Press <code>↻</code> to re-read and regenerate with the new mode.</span></div>
+    </details>
+
+    <details class="faq"><summary><span data-lang="fa">ویندوز موقع اجرای برنامه هشدار امنیتی داد</span><span data-lang="en">Windows showed a security warning when I ran the app</span></summary>
+      <div class="fb"><span data-lang="fa">این SmartScreen است چون فایل امضای تجاری ندارد. روی <b>More info → Run anyway</b> بزن. مشکلی برای برنامه نیست.</span><span data-lang="en">That's SmartScreen because the file isn't commercially signed. Click <b>More info → Run anyway</b>. The app is fine.</span></div>
+    </details>
+
+    <details class="faq"><summary><span data-lang="fa">آیا برای استفاده از افزونه کلید API لازم است؟</span><span data-lang="en">Do I need an API key to use the extension?</span></summary>
+      <div class="fb"><span data-lang="fa">نه. خواندن و ساختن بریفینگ کاملاً بدون کلید کار می‌کند. کلید API فقط برای قابلیت اختیاری «دقیق‌سازی context با AI» لازم است.</span><span data-lang="en">No. Reading and building the briefing work with no key at all. An API key is only for the optional “refine context with AI” feature.</span></div>
+    </details>
+
+    <details class="faq"><summary><span data-lang="fa">تفاوت افزونه و نرم‌افزار دسکتاپ چیست؟</span><span data-lang="en">What's the difference between the extension and the desktop app?</span></summary>
+      <div class="fb"><span data-lang="fa">افزونه مکالمه را از مرورگر <b>می‌خواند</b>. نرم‌افزار دسکتاپ مکالمه‌ی خوانده‌شده (یا هر فایل/متن) را <b>تحلیل، ویرایش و بسته‌بندی</b> می‌کند. برای کار ساده فقط افزونه کافی است.</span><span data-lang="en">The extension <b>reads</b> the conversation from the browser. The desktop app <b>analyzes, edits and packages</b> a read conversation (or any file/text). For simple use, the extension alone is enough.</span></div>
+    </details>
+
+    <details class="faq"><summary><span data-lang="fa">پوشه‌ی <code>extension</code> را جابه‌جا یا پاک کنم اشکالی دارد؟</span><span data-lang="en">Can I move or delete the <code>extension</code> folder?</span></summary>
+      <div class="fb"><span data-lang="fa">تا وقتی افزونه در کروم نصب است، آن پوشه باید سر جایش بماند. اگر جابه‌جایش کنی باید دوباره از <code>chrome://extensions</code> با «Load unpacked» معرفی‌اش کنی.</span><span data-lang="en">While it's loaded in Chrome, that folder must stay put. If you move it, re-add it from <code>chrome://extensions</code> with “Load unpacked”.</span></div>
+    </details>
+  </section>
+
+  <footer>
+    <p style="font-weight:800;font-size:17px;margin-bottom:4px"><span data-lang="fa">پشتیبانی و ارتباط</span><span data-lang="en">Support &amp; contact</span></p>
+    <p style="color:var(--muted);font-size:14.5px">
+      <span data-lang="fa">سوال یا مشکلی داشتی، در کانال تلگرام ما بپرس.</span>
+      <span data-lang="en">Questions or issues? Ask on our Telegram channel.</span>
+    </p>
+    <a class="tgbtn" href="https://t.me/softserv_ir" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M21.9 4.3 18.7 19.4c-.2 1-.9 1.3-1.8.8l-4.9-3.6-2.4 2.3c-.3.3-.5.5-1 .5l.3-5 9.1-8.2c.4-.4-.1-.6-.6-.2L6.4 13.2 1.6 11.7c-1-.3-1-1 .2-1.5L20.6 2.9c.9-.3 1.6.2 1.3 1.4z"/></svg>
+      @softserv_ir
+    </a>
+    <p class="dev"><span data-lang="fa">توسعه‌دهنده:</span><span data-lang="en">Developer:</span> <b>Mehrdad Sadegh</b></p>
+    <p style="color:var(--muted);font-size:12px;margin-top:6px"><span data-lang="fa">هاب انتقال مکالمه — نسخه ۰.۳.۰</span><span data-lang="en">Conversation Transfer Hub — v0.3.0</span></p>
+  </footer>
+
+</div>
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap">
+<script>
+  (function(){
+    var body=document.body;
+    // theme
+    var theme=null;
+    try{theme=localStorage.getItem("guide_theme");}catch(e){}
+    function applyTheme(){
+      if(theme==="light"||theme==="dark")document.documentElement.setAttribute("data-theme",theme);
+      else document.documentElement.removeAttribute("data-theme");
+      document.getElementById("themeIco").textContent=theme==="dark"?"☾":theme==="light"?"☀":"◐";
+    }
+    applyTheme();
+    document.getElementById("themeBtn").addEventListener("click",function(){
+      theme=theme==="light"?"dark":theme==="dark"?null:"light";
+      try{localStorage.setItem("guide_theme",theme||"");}catch(e){}
+      applyTheme();
+    });
+    // language
+    var lang="fa";
+    try{var s=localStorage.getItem("guide_lang");if(s==="en"||s==="fa")lang=s;}catch(e){}
+    function applyLang(){
+      body.setAttribute("data-show",lang);
+      document.documentElement.lang=lang;
+      document.documentElement.dir=(lang==="fa")?"rtl":"ltr";
+      document.getElementById("langBtn").textContent=(lang==="fa")?"EN":"فا";
+    }
+    applyLang();
+    document.getElementById("langBtn").addEventListener("click",function(){
+      lang=(lang==="fa")?"en":"fa";
+      try{localStorage.setItem("guide_lang",lang);}catch(e){}
+      applyLang();
+    });
+  })();
+</script>
+</body>
+</html>

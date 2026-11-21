@@ -10,8 +10,25 @@ Nothing is uploaded unless you deliberately enable the optional AI-refine step
 with your own API key.
 
 > **فارسی:** این پروژه یک مکالمه‌ی کامل را به‌همراه context آن از یک هوش مصنوعی به
-> هوش مصنوعی دیگر منتقل می‌کند؛ کدها دست‌نخورده می‌مانند و هیچ‌چیز بدون اجازه‌ی
+> هوش مصنوعی دیگر منتقل می‌مانند وجود اجازه‌ی
 > شما جایی آپلود نمی‌شود. راهنمای کامل فارسی/انگلیسی در فایل `Guide.html` است.
+
+## Download
+
+**[⬇ Download the latest release](https://github.com/mehrdad-sadegh/Conversation-Transfer-Hub/releases/latest)** — always the newest Windows build.
+
+Direct downloads (v0.3.0):
+
+- [**Portable** — no install needed](https://github.com/mehrdad-sadegh/Conversation-Transfer-Hub/releases/download/v0.3.0/ConversationTransferHub-0.3.0-portable.exe) (runs from anywhere, even a USB stick)
+- [**Installer** — Setup with shortcuts](https://github.com/mehrdad-sadegh/Conversation-Transfer-Hub/releases/download/v0.3.0/Conversation.Transfer.Hub.Setup.0.3.0.exe)
+
+On first run Windows SmartScreen may warn because the files aren't code-signed —
+choose **More info → Run anyway**. The browser extension lives in `extension/`
+and is loaded separately (see below).
+
+> **فارسی:** از لینک بالا آخرین نسخه را دانلود کن — فایل **Portable** بدون نصب
+> اجرا می‌شود و فایل **Installer** نسخه‌ی نصبی است. بار اول اگر ویندوز هشدار داد،
+> روی More info → Run anyway بزن.
 
 ---
 
@@ -55,7 +72,7 @@ destination AI.
 
 ## Install — the desktop app
 
-Grab a build from the **Releases** page and run either:
+Download a build from the [**Releases**](https://github.com/mehrdad-sadegh/Conversation-Transfer-Hub/releases/latest) page and run either:
 
 - `ConversationTransferHub-<version>-portable.exe` — runs with no install, even
   from a USB stick, or

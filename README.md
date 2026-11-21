@@ -10,25 +10,32 @@ Nothing is uploaded unless you deliberately enable the optional AI-refine step
 with your own API key.
 
 > **فارسی:** این پروژه یک مکالمه‌ی کامل را به‌همراه context آن از یک هوش مصنوعی به
-> هوش مصنوعی دیگر منتقل می‌مانند وجود اجازه‌ی
+> هوش مصنوعی دیگر منتقل می‌کند؛ کدها دست‌نخورده می‌مانند و هیچ‌چیز بدون اجازه‌ی
 > شما جایی آپلود نمی‌شود. راهنمای کامل فارسی/انگلیسی در فایل `Guide.html` است.
 
 ## Download
 
-**[⬇ Download the latest release](https://github.com/mehrdad-sadegh/Conversation-Transfer-Hub/releases/latest)** — always the newest Windows build.
+**[⬇ Open the latest release](https://github.com/mehrdad-sadegh/Conversation-Transfer-Hub/releases/latest)** — the browser extension and the Windows builds.
+
+The **browser extension is the main reader** — it reads your open conversation
+directly. The desktop app is an optional hub for deeper editing. Most people just
+need the extension.
 
 Direct downloads (v0.3.0):
 
-- [**Portable** — no install needed](https://github.com/mehrdad-sadegh/Conversation-Transfer-Hub/releases/download/v0.3.0/ConversationTransferHub-0.3.0-portable.exe) (runs from anywhere, even a USB stick)
-- [**Installer** — Setup with shortcuts](https://github.com/mehrdad-sadegh/Conversation-Transfer-Hub/releases/download/v0.3.0/Conversation.Transfer.Hub.Setup.0.3.0.exe)
+- [**Browser extension** (`extension.zip`)](https://github.com/mehrdad-sadegh/Conversation-Transfer-Hub/releases/download/v0.3.0/extension.zip) — unzip, then load it unpacked (see [Install — the extension](#install--the-extension))
+- [**Desktop — Portable**](https://github.com/mehrdad-sadegh/Conversation-Transfer-Hub/releases/download/v0.3.0/ConversationTransferHub-0.3.0-portable.exe) — no install, runs from anywhere, even a USB stick
+- [**Desktop — Installer**](https://github.com/mehrdad-sadegh/Conversation-Transfer-Hub/releases/download/v0.3.0/Conversation.Transfer.Hub.Setup.0.3.0.exe) — Setup with Start-menu and desktop shortcuts
 
 On first run Windows SmartScreen may warn because the files aren't code-signed —
-choose **More info → Run anyway**. The browser extension lives in `extension/`
-and is loaded separately (see below).
+choose **More info → Run anyway**. (The extension's source also lives in the
+`extension/` folder of this repo.)
 
-> **فارسی:** از لینک بالا آخرین نسخه را دانلود کن — فایل **Portable** بدون نصب
-> اجرا می‌شود و فایل **Installer** نسخه‌ی نصبی است. بار اول اگر ویندوز هشدار داد،
-> روی More info → Run anyway بزن.
+> **فارسی:** افزونه‌ی مرورگر بخش اصلیه — همون که چت‌ها رو می‌خونه؛ برنامه‌ی دسکتاپ
+> اختیاریه. فایل `extension.zip` رو دانلود و اکسترکت کن و طبق بخش «Install — the
+> extension» به‌صورت unpacked لودش کن. در صورت نیاز نسخه‌ی دسکتاپ (Portable یا
+> Installer) رو هم از همون لینک‌ها بگیر. بار اول اگر ویندوز هشدار داد، روی
+> More info → Run anyway بزن.
 
 ---
 
@@ -62,7 +69,7 @@ walkthrough is in **`Guide.html`** (open it in any browser).
 
 1. Open `chrome://extensions` (or `edge://extensions`).
 2. Turn on **Developer mode** (top-right).
-3. Click **Load unpacked** and select the `extension/` folder.
+3. Click **Load unpacked** and select the `extension/` folder (the unzipped `extension.zip`).
 4. Pin the extension so its button is visible.
 
 Then open a conversation on ChatGPT / Claude / Gemini / DeepSeek, click the

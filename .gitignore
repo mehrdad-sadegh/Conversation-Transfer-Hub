@@ -1,0 +1,27 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+build/win-unpacked/
+*.exe
+*.blockmap
+builder-debug.yml
+builder-effective-config.yaml
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+
+# Local data / secrets
+keys.json
+history.json
+settings.json
+*.ai-transfer.json
